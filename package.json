@@ -1,0 +1,46 @@
+{
+  "name": "project-lvl2-s133-lozovsky",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest",
+    "babel-node": "babel-node",
+    "eslint": "eslint src",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublish": "npm run build"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fitz354/project-lvl2-s133.git"
+  },
+  "author": "lozovsky alexander",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fitz354/project-lvl2-s133/issues"
+  },
+  "homepage": "https://github.com/Fitz354/project-lvl2-s133#readme",
+  "devDependencies": {
+    "babel-cli": "6.26.x",
+    "babel-core": "6.26.x ",
+    "babel-eslint": "^8.0.1",
+    "babel-preset-env": "1.6.x",
+    "babel-preset-stage-0": "6.24.x",
+    "eslint": "^4.8.0",
+    "eslint-config-airbnb-base": "^12.0.2",
+    "eslint-plugin-import": "^2.7.0",
+    "jest": "^21.2.1"
+  },
+  "dependencies": {
+    "commander": "^2.11.0"
+  }
+}
