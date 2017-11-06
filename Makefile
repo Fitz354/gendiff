@@ -1,7 +1,7 @@
 install:
 	npm install
 start:
-	npm run babel-node -- src/bin/gendiff.js src/test/configs/json1.json src/test/configs/json2.json
+	npm run babel-node -- src/bin/gendiff.js __tests__/fixtures/json1.json __tests__/fixtures/json2.json
 test:
 	npm test
 publish:
