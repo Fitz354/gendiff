@@ -1,5 +1,7 @@
-import { find, union } from 'lodash';
 import fs from 'fs';
+import path from 'path';
+import { find, union } from 'lodash';
+import parse from './parser';
 
 const diffProperties = [
   {
@@ -39,7 +41,7 @@ const render = (firstFile, secondFile) => {
   }, {});
 };
 
-const parse = (data) => {
+const toString = (data) => {
   const result = Object.keys(data).map((item) => {
     const { getDiff } = getDiffProperties(data[item]);
 
@@ -49,8 +51,13 @@ const parse = (data) => {
 };
 
 export default (pathToFile1, pathToFile2) => {
-  const firstFile = JSON.parse(fs.readFileSync(pathToFile1, 'utf-8'));
-  const secondFile = JSON.parse(fs.readFileSync(pathToFile2, 'utf-8'));
+  const firstFileStr = fs.readFileSync(pathToFile1, 'utf-8');
+  const secondFileStr = fs.readFileSync(pathToFile2, 'utf-8');
+  const firstFileExtension = path.extname(pathToFile1);
+  const secondFileExtension = path.extname(pathToFile2);
 
-  return parse(render(firstFile, secondFile));
+  const firstFile = parse(firstFileStr, firstFileExtension);
+  const secondFile = parse(secondFileStr, secondFileExtension);
+
+  return toString(render(firstFile, secondFile));
 };
