@@ -1,21 +1,14 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-const getParser = (extname) => {
-  switch (extname) {
-    case '.json':
-      return JSON.parse;
-    case '.yml':
-      return yaml.safeLoad;
-    case '.ini':
-      return ini.parse;
-    default:
-      return false;
-  }
+const parserTypes = {
+  '.json': JSON.parse,
+  '.yml': yaml.safeLoad,
+  '.ini': ini.parse,
 };
 
 export default (str, extname) => {
-  const parser = getParser(extname);
+  const parser = parserTypes[extname];
 
   return parser(str);
 };
