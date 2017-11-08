@@ -1,7 +1,8 @@
 import gendiff from '../src';
 
 describe('gendiff', () => {
-  const expected = '{\n' +
+  const expected =
+  '{\n' +
   '    host: hexlet.io\n' +
   '  + timeout: 20\n' +
   '  - timeout: 50\n' +
@@ -9,7 +10,8 @@ describe('gendiff', () => {
   '  + verbose: true\n' +
   '}';
 
-  const expected2 = '{\n' +
+  const expected2 =
+  '{\n' +
   '    common: {\n' +
   '        setting1: Value 1\n' +
   '      - setting2: 200\n' +
