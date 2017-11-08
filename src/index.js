@@ -7,22 +7,22 @@ const diffProperties = [
   {
     type: 'unchanged',
     check: ({ value1, value2 }) => value1 === value2,
-    getDiff: ({ key, value1 }) => `  ${key}: ${value1}`,
+    getDiff: ({ key, value1 }) => `    ${key}: ${value1}`,
   },
   {
     type: 'deleted',
     check: ({ value2 }) => value2 === undefined,
-    getDiff: ({ key, value1 }) => `- ${key}: ${value1}`,
+    getDiff: ({ key, value1 }) => `  - ${key}: ${value1}`,
   },
   {
     type: 'added',
     check: ({ value1 }) => value1 === undefined,
-    getDiff: ({ key, value2 }) => `+ ${key}: ${value2}`,
+    getDiff: ({ key, value2 }) => `  + ${key}: ${value2}`,
   },
   {
     type: 'changed',
     check: ({ value1, value2 }) => value1 !== value2,
-    getDiff: ({ key, value1, value2 }) => `+ ${key}: ${value2}\n- ${key}: ${value1}`,
+    getDiff: ({ key, value1, value2 }) => `  + ${key}: ${value2}\n  - ${key}: ${value1}`,
   },
 ];
 
