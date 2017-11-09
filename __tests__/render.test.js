@@ -5,6 +5,7 @@ import Deleted from '../src/diff/Deleted';
 import Added from '../src/diff/Added';
 import Diff from '../src/diff/Diff';
 
+
 test('check render', () => {
   const expected = new Diff('', [
     new Changed('host', 'hexlet.io', 'hexlet'),

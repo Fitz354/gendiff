@@ -66,7 +66,7 @@ describe('gendiff', () => {
     const path4 = '__tests__/fixtures/config4.yml';
     const actual = gendiff(path3, path4);
 
-    expect(actual).toBe(expected);
+    expect(actual).toBe(expected2);
   });
 
   test('.ini', () => {
@@ -82,6 +82,6 @@ describe('gendiff', () => {
     const path4 = '__tests__/fixtures/config4.ini';
     const actual = gendiff(path3, path4);
 
-    expect(actual).toBe(expected);
+    expect(actual).toBe(expected2);
   });
 });
