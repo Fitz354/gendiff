@@ -1,9 +1,17 @@
+import { isObject } from 'lodash';
 import Diff from './Diff';
 
 export default class Changed extends Diff {
   constructor(key, value, value2) {
     super(key, value);
     this.value2 = value2;
+  }
+
+  toPlain(parent) {
+    const newValue = isObject(this.value) ? 'complex value' : `'${this.value}'`;
+    const newValue2 = isObject(this.value2) ? 'complex value' : `'${this.value2}'`;
+
+    return `Property '${parent}${this.key}' was updated: From ${newValue} to ${newValue2}`;
   }
 
   toString(level) {

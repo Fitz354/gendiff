@@ -16,6 +16,10 @@ export default class Diff {
     }).join('\n');
   }
 
+  toPlain() {
+    return this.value.map(item => item.toPlain('')).join('\n');
+  }
+
   toString(level = 0) {
     const newValue = this.value.map(item => item.toString(level)).join('\n');
 
