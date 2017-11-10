@@ -1,23 +1,39 @@
 import render from '../src/render';
-import Unchanged from '../src/diff/Unchanged';
-import Changed from '../src/diff/Changed';
-import Deleted from '../src/diff/Deleted';
-import Added from '../src/diff/Added';
-import Diff from '../src/diff/Diff';
-
 
 test('check render', () => {
-  const expected = new Diff('', [
-    new Changed('host', 'hexlet.io', 'hexlet'),
-    new Unchanged('timeout', 50),
-    new Unchanged('group1', [
-      new Unchanged('val1', 10),
-      new Deleted('val3', false),
-      new Added('val2', true),
-      new Added('group2', { val3: 'value' }),
-    ]),
-    new Changed('group5', { a: 10 }, 20),
-  ]);
+  const expected = {
+    type: 'unchanged',
+    key: '',
+    value: [
+      {
+        type: 'changed', key: 'host', value: 'hexlet.io', value2: 'hexlet',
+      },
+      {
+        type: 'unchanged', key: 'timeout', value: 50,
+      },
+      {
+        type: 'unchanged',
+        key: 'group1',
+        value: [
+          {
+            type: 'unchanged', key: 'val1', value: 10,
+          },
+          {
+            type: 'deleted', key: 'val3', value: false,
+          },
+          {
+            type: 'added', key: 'val2', value: true,
+          },
+          {
+            type: 'added', key: 'group2', value: { val3: 'value' },
+          },
+        ],
+      },
+      {
+        type: 'changed', key: 'group5', value: { a: 10 }, value2: 20,
+      },
+    ],
+  };
 
   const before = {
     host: 'hexlet.io',

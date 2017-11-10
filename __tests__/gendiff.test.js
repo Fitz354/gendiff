@@ -47,9 +47,9 @@ describe('gendiff', () => {
   'Property \'common.setting6\' was removed\n' +
   'Property \'common.setting4\' was added with value: blah blah\n' +
   'Property \'common.setting5\' was added with complex value\n' +
-  'Property \'group1.baz\' was updated. From \'bars\' to \'bas\'\n' +
+  'Property \'group1.baz\' was updated: From \'bas\' to \'bars\'\n' +
   'Property \'group2\' was removed\n' +
-  'Property \'group3\' was added with complex value\n';
+  'Property \'group3\' was added with complex value';
 
   test('.json', () => {
     const path1 = '__tests__/fixtures/config1.json';
