@@ -19,8 +19,12 @@ const toPlain = (data) => {
     const path = parent ? `${parent}.${key}` : key;
 
     if (type === 'unchanged' && value instanceof Array) {
-      const filtered =
-        value.filter(({ type: typeDiff, value: val }) => !(typeDiff === 'unchanged' && !(val instanceof Array)));
+      const filtered = value.filter(({ type: typeDiff, value: val }) => {
+        if (typeDiff === 'unchanged') {
+          return val instanceof Array;
+        }
+        return true;
+      });
 
       return filtered.map(item => build(item, path)).join('\n');
     }
@@ -38,7 +42,8 @@ const toString = (data) => {
     let newValue2;
 
     if (type === 'unchanged' && value instanceof Array) {
-      newValue = `{\n${value.map(item => build(item, level + 1)).join('\n')}\n${intend}${' '.repeat(4)}}`;
+      const children = value.map(item => build(item, level + 1)).join('\n');
+      newValue = `{\n${children}\n${intend}${' '.repeat(4)}}`;
     } else {
       newValue = isObject(value) ? getStrFromObject(value, level + 1) : value;
       newValue2 = isObject(value2) ? getStrFromObject(value2, level + 1) : value2;
