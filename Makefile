@@ -9,5 +9,7 @@ lint:
 test:
 	make lint
 	npm test
+watch:
+	npm run watch
 publish:
 	npm publish

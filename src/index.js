@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import parse from './parser';
-import render from './render';
+import render from './ast';
 import getFormat from './format';
 
 export default (pathToFile1, pathToFile2, format = 'defalut') => {
