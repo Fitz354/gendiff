@@ -23,10 +23,9 @@ const toString = (data) => {
         isObject(valueAfter) ? getStrFromObject(valueAfter, level + 1) : valueAfter;
 
       switch (type) {
+        case 'nested':
+          return `${intend}    ${key}: {\n${build(children, level + 1)}\n${intend}${' '.repeat(4)}}`;
         case 'unchanged':
-          if (children.length > 0) {
-            return `${intend}    ${key}: {\n${build(children, level + 1)}\n${intend}${' '.repeat(4)}}`;
-          }
           return `${intend}    ${key}: ${newValueBefore}`;
         case 'deleted':
           return `${intend}  - ${key}: ${newValueBefore}`;
@@ -50,8 +49,8 @@ const toPlain = (data) => {
       const complexAfter = isObject(valueAfter) ? 'complex value' : '';
 
       switch (type) {
-        case 'unchanged':
-          return children.length > 0 ? build(children, path) : '';
+        case 'nested':
+          return build(children, path);
         case 'deleted':
           return `Property '${path}' was removed`;
         case 'added':
@@ -70,8 +69,10 @@ const toJson = (data) => {
   const build = (ast, acc) =>
     ast.reduce((newAcc, { type, key, valueBefore, valueAfter, children }) => {
       switch (type) {
+        case 'nested':
+          return { ...newAcc, [key]: build(children, {}) };
         case 'unchanged':
-          return children.length > 0 ? { ...newAcc, [key]: build(children, {}) } : { ...newAcc };
+          return { ...newAcc };
         case 'changed':
           return { ...newAcc, [key]: { diff: type, from: valueBefore, to: valueAfter } };
         default:

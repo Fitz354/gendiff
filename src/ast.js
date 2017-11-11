@@ -1,20 +1,18 @@
 /*  eslint object-curly-newline: 0  */
 import { isUndefined, find, union, isEqual, isPlainObject } from 'lodash';
 
-const hasChildren = (valueBefore, valueAfter) =>
-  isPlainObject(valueBefore) && isPlainObject(valueAfter) && !isEqual(valueBefore, valueAfter);
-
 const diffProps = [
   {
+    type: 'nested',
+    check: (valueBefore, valueAfter) =>
+      isPlainObject(valueBefore) && isPlainObject(valueAfter) && !isEqual(valueBefore, valueAfter),
+    process: (valueBefore, valueAfter, fn) => ({ children: fn(valueBefore, valueAfter) }),
+  },
+  {
     type: 'unchanged',
-    check: (valueBefore, valueAfter) => valueBefore === valueAfter ||
-      hasChildren(valueBefore, valueAfter) || isEqual(valueBefore, valueAfter),
-    process: (valueBefore, valueAfter, fn) => {
-      if (hasChildren(valueBefore, valueAfter)) {
-        return { valueBefore: '', children: fn(valueBefore, valueAfter) };
-      }
-      return { valueBefore, children: [] };
-    },
+    check: (valueBefore, valueAfter) =>
+      valueBefore === valueAfter || isEqual(valueBefore, valueAfter),
+    process: valueBefore => ({ valueBefore }),
   },
   {
     type: 'deleted',

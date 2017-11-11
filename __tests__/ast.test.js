@@ -5,19 +5,18 @@ import ast from '../src/ast';
 test('check render', () => {
   const expected = [
     { type: 'changed', key: 'host', valueBefore: 'hexlet.io', valueAfter: 'hexlet' },
-    { type: 'unchanged', key: 'timeout', valueBefore: 50, children: [] },
-    { type: 'unchanged', key: 'val5', valueBefore: [1, 2, 3], children: [] },
-    { type: 'unchanged',
+    { type: 'unchanged', key: 'timeout', valueBefore: 50 },
+    { type: 'unchanged', key: 'val5', valueBefore: [1, 2, 3] },
+    { type: 'nested',
       key: 'group1',
-      valueBefore: '',
       children: [
-        { type: 'unchanged', key: 'val1', valueBefore: 10, children: [] },
+        { type: 'unchanged', key: 'val1', valueBefore: 10 },
         { type: 'deleted', key: 'val3', valueBefore: false },
         { type: 'added', key: 'val2', valueAfter: true },
         { type: 'added', key: 'group2', valueAfter: { val3: 'value' } },
       ] },
     { type: 'changed', key: 'group5', valueBefore: { a: 10 }, valueAfter: 20 },
-    { type: 'unchanged', key: 'value6', valueBefore: { a: 10, b: 20 }, children: [] },
+    { type: 'unchanged', key: 'value6', valueBefore: { a: 10, b: 20 } },
     { type: 'changed', key: 'value7', valueBefore: [5, 6, 7], valueAfter: { a: 5 } },
   ];
 
