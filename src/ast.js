@@ -1,12 +1,16 @@
 /*  eslint object-curly-newline: 0  */
-import { isUndefined, find, union, isObject } from 'lodash';
+import { isUndefined, find, union, isEqual, isPlainObject } from 'lodash';
+
+const hasChildren = (value, value2) =>
+  isPlainObject(value) && isPlainObject(value2) && !isEqual(value, value2);
 
 const diffProps = [
   {
     type: 'unchanged',
-    check: (value, value2) => (isObject(value) && isObject(value2)) || value === value2,
+    check: (value, value2) =>
+      value === value2 || hasChildren(value, value2) || isEqual(value, value2),
     process: (value, value2, fn) => {
-      if ((isObject(value) && isObject(value2))) {
+      if (hasChildren(value, value2)) {
         return { value: '', children: fn(value, value2) };
       }
       return { value, children: [] };
