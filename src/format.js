@@ -1,13 +1,13 @@
 /*  eslint object-curly-newline: 0  */
 import { isObject } from 'lodash';
 
-const getStrFromObject = (value, level) => {
+const objectToString = (value, level) => {
   if (value instanceof Array) {
     return JSON.stringify(value);
   }
-  const str = JSON.stringify(value, null, ' '.repeat(4)).replace(/[,"]/g, '');
+  const jsonStr = JSON.stringify(value, null, ' '.repeat(4)).replace(/[,"]/g, '');
 
-  return str.split('\n').map((item, index) => {
+  return jsonStr.split('\n').map((item, index) => {
     const newItem = index === 0 ? item : `${' '.repeat(level * 4)}${item}`;
     return newItem;
   }).join('\n');
@@ -18,9 +18,9 @@ const toString = (data) => {
     ast.map(({ type, key, valueBefore, valueAfter, children }) => {
       const intend = ' '.repeat(level * 4);
       const newValueBefore =
-        isObject(valueBefore) ? getStrFromObject(valueBefore, level + 1) : valueBefore;
+        isObject(valueBefore) ? objectToString(valueBefore, level + 1) : valueBefore;
       const newValueAfter =
-        isObject(valueAfter) ? getStrFromObject(valueAfter, level + 1) : valueAfter;
+        isObject(valueAfter) ? objectToString(valueAfter, level + 1) : valueAfter;
 
       switch (type) {
         case 'nested':
@@ -44,19 +44,19 @@ const toString = (data) => {
 const toPlain = (data) => {
   const build = (ast, parent) =>
     ast.map(({ type, key, valueBefore, valueAfter, children }) => {
-      const path = parent ? `${parent}.${key}` : key;
+      const fullName = parent ? `${parent}.${key}` : key;
       const complexBefore = isObject(valueBefore) ? 'complex value' : '';
       const complexAfter = isObject(valueAfter) ? 'complex value' : '';
 
       switch (type) {
         case 'nested':
-          return build(children, path);
+          return build(children, fullName);
         case 'deleted':
-          return `Property '${path}' was removed`;
+          return `Property '${fullName}' was removed`;
         case 'added':
-          return `Property '${path}' was added with ${complexAfter || `value: ${valueAfter}`}`;
+          return `Property '${fullName}' was added with ${complexAfter || `value: ${valueAfter}`}`;
         case 'changed':
-          return `Property '${path}' was updated: From ${complexBefore || `'${valueBefore}'`} to ${complexAfter || `'${valueAfter}'`}`;
+          return `Property '${fullName}' was updated: From ${complexBefore || `'${valueBefore}'`} to ${complexAfter || `'${valueAfter}'`}`;
         default:
           return '';
       }
