@@ -1,50 +1,50 @@
 /*  eslint object-curly-newline: 0  */
 import { isUndefined, find, union, isEqual, isPlainObject } from 'lodash';
 
-const hasChildren = (value, value2) =>
-  isPlainObject(value) && isPlainObject(value2) && !isEqual(value, value2);
+const hasChildren = (valueBefore, valueAfter) =>
+  isPlainObject(valueBefore) && isPlainObject(valueAfter) && !isEqual(valueBefore, valueAfter);
 
 const diffProps = [
   {
     type: 'unchanged',
-    check: (value, value2) =>
-      value === value2 || hasChildren(value, value2) || isEqual(value, value2),
-    process: (value, value2, fn) => {
-      if (hasChildren(value, value2)) {
-        return { value: '', children: fn(value, value2) };
+    check: (valueBefore, valueAfter) => valueBefore === valueAfter ||
+      hasChildren(valueBefore, valueAfter) || isEqual(valueBefore, valueAfter),
+    process: (valueBefore, valueAfter, fn) => {
+      if (hasChildren(valueBefore, valueAfter)) {
+        return { valueBefore: '', children: fn(valueBefore, valueAfter) };
       }
-      return { value, children: [] };
+      return { valueBefore, children: [] };
     },
   },
   {
     type: 'deleted',
-    check: (value, value2) => isUndefined(value2),
-    process: (...args) => ({ value: args[0] }),
+    check: (valueBefore, valueAfter) => isUndefined(valueAfter),
+    process: valueBefore => ({ valueBefore }),
   },
   {
     type: 'added',
-    check: value => isUndefined(value),
-    process: (...args) => ({ value: args[1] }),
+    check: valueBefore => isUndefined(valueBefore),
+    process: (valueBefore, valueAfter) => ({ valueAfter }),
   },
   {
     type: 'changed',
-    check: (value1, value2) => value1 !== value2,
-    process: (value, value2) => ({ value, value2 }),
+    check: (valueBefore, valueAfter) => valueBefore !== valueAfter,
+    process: (valueBefore, valueAfter) => ({ valueBefore, valueAfter }),
   },
 ];
 
 const getDiffProps =
-  (firstValue, secondValue) => find(diffProps, ({ check }) => check(firstValue, secondValue));
+  (valueBefore, valueAfter) => find(diffProps, ({ check }) => check(valueBefore, valueAfter));
 
 const render = (firstFile, secondFile) => {
   const keys = union(Object.keys(firstFile), (Object.keys(secondFile)));
 
   return keys.map((key) => {
-    const value = firstFile[key];
-    const value2 = secondFile[key];
-    const { type, process } = getDiffProps(value, value2);
+    const valueBefore = firstFile[key];
+    const valueAfter = secondFile[key];
+    const { type, process } = getDiffProps(valueBefore, valueAfter);
 
-    return { type, key, ...process(value, value2, render) };
+    return { type, key, ...process(valueBefore, valueAfter, render) };
   });
 };
 
