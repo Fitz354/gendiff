@@ -2,13 +2,14 @@
 import { isObject } from 'lodash';
 
 const getStrFromObject = (value, level) => {
+  if (value instanceof Array) {
+    return JSON.stringify(value);
+  }
   const str = JSON.stringify(value, null, ' '.repeat(4)).replace(/[,"]/g, '');
 
   return str.split('\n').map((item, index) => {
-    if (index === 0) {
-      return item;
-    }
-    return index === 0 ? item : `${' '.repeat(level * 4)}${item}`;
+    const newItem = index === 0 ? item : `${' '.repeat(level * 4)}${item}`;
+    return newItem;
   }).join('\n');
 };
 
@@ -16,19 +17,16 @@ const toString = (data) => {
   const build = (ast, level) =>
     ast.map(({ type, key, valueBefore, valueAfter, children }) => {
       const intend = ' '.repeat(level * 4);
-      let newValueBefore;
-      let newValueAfter;
+      const newValueBefore =
+        isObject(valueBefore) ? getStrFromObject(valueBefore, level + 1) : valueBefore;
+      const newValueAfter =
+        isObject(valueAfter) ? getStrFromObject(valueAfter, level + 1) : valueAfter;
 
-      if (type === 'unchanged' && children.length > 0) {
-        const strChildren = build(children, level + 1);
-        newValueBefore = `{\n${strChildren}\n${intend}${' '.repeat(4)}}`;
-      } else {
-        newValueBefore =
-          isObject(valueBefore) ? getStrFromObject(valueBefore, level + 1) : valueBefore;
-        newValueAfter = isObject(valueAfter) ? getStrFromObject(valueAfter, level + 1) : valueAfter;
-      }
       switch (type) {
         case 'unchanged':
+          if (children.length > 0) {
+            return `${intend}    ${key}: {\n${build(children, level + 1)}\n${intend}${' '.repeat(4)}}`;
+          }
           return `${intend}    ${key}: ${newValueBefore}`;
         case 'deleted':
           return `${intend}  - ${key}: ${newValueBefore}`;
@@ -48,22 +46,18 @@ const toPlain = (data) => {
   const build = (ast, parent) =>
     ast.map(({ type, key, valueBefore, valueAfter, children }) => {
       const path = parent ? `${parent}.${key}` : key;
-      if (type === 'unchanged' && children.length > 0) {
-        return build(children, path);
-      }
-      let newValueBefore;
-      let newValueAfter;
+      const complexBefore = isObject(valueBefore) ? 'complex value' : '';
+      const complexAfter = isObject(valueAfter) ? 'complex value' : '';
 
       switch (type) {
+        case 'unchanged':
+          return children.length > 0 ? build(children, path) : '';
         case 'deleted':
           return `Property '${path}' was removed`;
         case 'added':
-          newValueAfter = isObject(valueAfter) ? 'complex value' : `value: ${valueAfter}`;
-          return `Property '${path}' was added with ${newValueAfter}`;
+          return `Property '${path}' was added with ${complexAfter || `value: ${valueAfter}`}`;
         case 'changed':
-          newValueBefore = isObject(valueBefore) ? 'complex value' : `'${valueBefore}'`;
-          newValueAfter = isObject(valueAfter) ? 'complex value' : `'${valueAfter}'`;
-          return `Property '${path}' was updated: From ${newValueBefore} to ${newValueAfter}`;
+          return `Property '${path}' was updated: From ${complexBefore || `'${valueBefore}'`} to ${complexAfter || `'${valueAfter}'`}`;
         default:
           return '';
       }
@@ -75,12 +69,9 @@ const toPlain = (data) => {
 const toJson = (data) => {
   const build = (ast, acc) =>
     ast.reduce((newAcc, { type, key, valueBefore, valueAfter, children }) => {
-      if (type === 'unchanged' && children.length === 0) {
-        return { ...newAcc };
-      }
       switch (type) {
         case 'unchanged':
-          return { ...newAcc, [key]: build(children, {}) };
+          return children.length > 0 ? { ...newAcc, [key]: build(children, {}) } : { ...newAcc };
         case 'changed':
           return { ...newAcc, [key]: { diff: type, from: valueBefore, to: valueAfter } };
         default:
