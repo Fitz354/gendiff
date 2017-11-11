@@ -1,6 +1,6 @@
 {
   "name": "project-lvl2-s133-lozovsky",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "",
   "main": "dist/index.js",
   "bin": {

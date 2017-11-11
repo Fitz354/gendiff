@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import parse from './parser';
-import render from './ast';
+import getAst from './ast';
 import getFormat from './format';
 
 export default (pathToFile1, pathToFile2, format = 'defalut') => {
@@ -14,5 +14,5 @@ export default (pathToFile1, pathToFile2, format = 'defalut') => {
   const secondFile = parse(secondFileStr, secondFileExtension);
   const toFormat = getFormat(format);
 
-  return toFormat(render(firstFile, secondFile));
+  return toFormat(getAst(firstFile, secondFile));
 };

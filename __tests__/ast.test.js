@@ -1,6 +1,6 @@
 /*  eslint object-curly-newline: 0  */
 
-import render from '../src/ast';
+import ast from '../src/ast';
 
 test('check render', () => {
   const expected = [
@@ -60,5 +60,5 @@ test('check render', () => {
     },
   };
 
-  expect(render(before, after)).toEqual(expected);
+  expect(ast(before, after)).toEqual(expected);
 });
