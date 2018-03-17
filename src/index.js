@@ -4,7 +4,7 @@ import parse from './parser';
 import getAst from './ast';
 import getFormat from './format';
 
-export default (pathToFile1, pathToFile2, format = 'defalut') => {
+export default (pathToFile1, pathToFile2, format = 'default') => {
   const firstFileStr = fs.readFileSync(pathToFile1, 'utf-8');
   const secondFileStr = fs.readFileSync(pathToFile2, 'utf-8');
   const firstFileExtension = path.extname(pathToFile1);

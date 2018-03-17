@@ -84,7 +84,7 @@ const toJson = (data) => {
 };
 
 const formats = {
-  defalut: toString,
+  default: toString,
   plain: toPlain,
   json: toJson,
 };

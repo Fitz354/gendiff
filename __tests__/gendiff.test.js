@@ -2,40 +2,40 @@ import gendiff from '../src';
 
 describe('gendiff', () => {
   const expected =
-  '{\n' +
-  '    host: hexlet.io\n' +
-  '  + timeout: 20\n' +
-  '  - timeout: 50\n' +
-  '  - proxy: 123.234.53.22\n' +
-  '  + verbose: true\n' +
-  '}';
+`{
+    host: hexlet.io
+  + timeout: 20
+  - timeout: 50
+  - proxy: 123.234.53.22
+  + verbose: true
+}`;
 
   const expected2 =
-  '{\n' +
-  '    common: {\n' +
-  '        setting1: Value 1\n' +
-  '      - setting2: 200\n' +
-  '        setting3: true\n' +
-  '      - setting6: {\n' +
-  '            key: value\n' +
-  '        }\n' +
-  '      + setting4: blah blah\n' +
-  '      + setting5: {\n' +
-  '            key5: value5\n' +
-  '        }\n' +
-  '    }\n' +
-  '    group1: {\n' +
-  '      + baz: bars\n' +
-  '      - baz: bas\n' +
-  '        foo: bar\n' +
-  '    }\n' +
-  '  - group2: {\n' +
-  '        abc: 12345\n' +
-  '    }\n' +
-  '  + group3: {\n' +
-  '        fee: 100500\n' +
-  '    }\n' +
-  '}';
+`{
+    common: {
+        setting1: Value 1
+      - setting2: 200
+        setting3: true
+      - setting6: {
+            key: value
+        }
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+    }
+    group1: {
+      + baz: bars
+      - baz: bas
+        foo: bar
+    }
+  - group2: {
+        abc: 12345
+    }
+  + group3: {
+        fee: 100500
+    }
+}`;
 
   const expectedPlain =
   'Property \'timeout\' was updated: From \'50\' to \'20\'\n' +

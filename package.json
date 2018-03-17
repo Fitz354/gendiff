@@ -1,5 +1,5 @@
 {
-  "name": "project-lvl2-s133-lozovsky",
+  "name": "gendiff-lozovsky",
   "version": "0.7.1",
   "description": "",
   "main": "dist/index.js",
@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fitz354/project-lvl2-s133.git"
+    "url": "git+https://github.com/Fitz354/gendiff.git"
   },
-  "author": "lozovsky alexander",
+  "author": "Lozovsky Alexander",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Fitz354/project-lvl2-s133/issues"
+    "url": "https://github.com/Fitz354/gendiff/issues"
   },
-  "homepage": "https://github.com/Fitz354/project-lvl2-s133#readme",
+  "homepage": "https://github.com/Fitz354/gendiff#readme",
   "devDependencies": {
     "babel-cli": "6.26.x",
     "babel-core": "6.26.x ",
