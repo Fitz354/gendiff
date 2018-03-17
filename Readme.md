@@ -4,6 +4,7 @@
 Compares two configuration files and shows a difference
 
 Supported config formats: `.json`, `.yml`, `.ini`
+
 Output formats: `plain text`, `tree`, `json`
 
 ### Install
